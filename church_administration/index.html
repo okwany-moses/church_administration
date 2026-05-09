@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gideons International Ministries | Admin</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Using Google Fonts for a more professional look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="logo-icon">⛪</div>
+                <h1>Welcome to Gideons Admin</h1>
+                <p>Sign in as Admin or register as a Viewer to preview the system.</p>
+            </div>
+
+            <div class="auth-grid">
+                <div class="auth-card auth-card-primary">
+                    <div class="auth-card-header">
+                        <h2>System Access</h2>
+                        <p>Sign in or register as Administrator or Viewer. Registered users are remembered for faster login.</p>
+                    </div>
+
+                    <div class="auth-mode-toggle auth-row">
+                        <button id="login-mode-btn" class="toggle-btn active" type="button" onclick="switchAuthMode('login')">Login</button>
+                        <button id="register-mode-btn" class="toggle-btn" type="button" onclick="switchAuthMode('register')">Register</button>
+                    </div>
+
+                    <div class="auth-role-toggle auth-row">
+                        <button id="role-viewer-btn" class="role-btn active" type="button" onclick="selectAuthRole('viewer')">Viewer</button>
+                        <button id="role-admin-btn" class="role-btn" type="button" onclick="selectAuthRole('admin')">Admin</button>
+                    </div>
+
+                    <form id="auth-form" class="login-form">
+                        <div class="form-group">
+                            <input list="saved-usernames" type="text" id="authUsername" placeholder=" ">
+                            <label for="authUsername">Username</label>
+                            <datalist id="saved-usernames"></datalist>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="password" id="authPassword" placeholder=" ">
+                            <label for="authPassword">Password</label>
+                        </div>
+
+                        <div id="register-extra" class="hidden">
+                            <div class="form-group">
+                                <input type="text" id="authName" placeholder=" ">
+                                <label for="authName">Full Name</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" id="authConfirmPassword" placeholder=" ">
+                                <label for="authConfirmPassword">Confirm Password</label>
+                            </div>
+                        </div>
+
+                        <div class="remember-reset-row">
+                            <label class="remember-me"><input type="checkbox" id="rememberMe"> Remember me</label>
+                            <button type="button" class="link-btn" onclick="openPasswordReset()">Forgot password?</button>
+                        </div>
+
+                        <button type="submit" class="login-btn" id="auth-action-btn">Login as Viewer</button>
+                        <p class="auth-tip" id="auth-hint">Viewer preview access lets you inspect members, finance and volunteers in read-only mode.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Notification</h3>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-message"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn" onclick="closeModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-container" id="main-dashboard" style="display: none;">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div id="sidebar-overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <span class="logo-icon">⛪</span>
+                <span class="logo-text">Gideons Int.</span>
+                <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+            </div>
+            
+            <ul class="nav-links">
+                <div class="search-container">
+                    <input type="text" id="globalSearch" placeholder="Search members..." oninput="handleSearch(this.value)">
+                    <div id="search-results-dropdown" class="search-dropdown"></div>
+                </div>
+                <li onclick="showModule('home')">
+                    <span class="icon">🏠</span>
+                    <span class="link-name">Dashboard</span>
+                </li>
+                <li onclick="showModule('clergy')">
+                    <span class="icon">📅</span>
+                    <span class="link-name">Clergy Support</span>
+                </li>
+                <li onclick="showModule('commms')">
+                    <span class="icon">📢</span>
+                    <span class="link-name">Communications</span>
+                </li>
+                <li onclick="showModule('facility')">
+                    <span class="icon">🛠️</span>
+                    <span class="link-name">Facilities</span>
+                </li>
+                <li onclick="showModule('finance')">
+                    <span class="icon">💰</span>
+                    <span class="link-name">Financials</span>
+                </li>
+                <li onclick="showModule('hr')">
+                    <span class="icon">👥</span>
+                    <span class="link-name">HR/Volunteers</span>
+                </li>
+                <li onclick="logout()">
+                    <span class="icon">🚪</span>
+                    <span class="link-name">Logout</span>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <header class="main-header">
+                <div class="header-info">
+                    <h1 id="module-title">Command Center</h1>
+                    <p id="module-subtitle">Welcome back, Admin. System is operational.</p>
+                </div>
+                <div class="user-profile">
+                    <span id="user-display">Admin</span>
+                    <div class="avatar"></div>
+                </div>
+            </header>
+            
+            <div id="module-display">
+                <!-- Grid View (Default) -->
+                <div class="main-dashboard-grid" id="home-grid">
+                    <!-- Inside your main-dashboard-grid in the HTML file -->
+                    <div class="nav-card" onclick="showModule('reports')">
+                        <div class="card-icon">📊</div>
+                        <h3>Report Center</h3>
+                        <p>Export Data & Stats</p>
+                    </div>
+                    <div class="nav-card" onclick="showModule('clergy')">
+                        <div class="card-icon">⛪</div>
+                        <h3>Clergy Support</h3>
+                        <p>Calendar & Services</p>
+                    </div>
+                    <div class="nav-card" onclick="showModule('commms')">
+                        <div class="card-icon">📢</div>
+                        <h3>Communications</h3>
+                        <p>Media & Bulletins</p>
+                    </div>
+                    <div class="nav-card" onclick="showModule('facility')">
+                        <div class="card-icon">🛠️</div>
+                        <h3>Facilities</h3>
+                        <p>Maintenance & Ops</p>
+                    </div>
+                    <div class="nav-card" onclick="showModule('finance')">
+                        <div class="card-icon">💰</div>
+                        <h3>Financials</h3>
+                        <p>Bookkeeping & Payroll</p>
+                    </div>
+                    <div class="nav-card" onclick="showModule('hr')">
+                        <div class="card-icon">👥</div>
+                        <h3>HR & Volunteers</h3>
+                        <p>Onboarding & Staff</p>
+                    </div>
+                    <div class="nav-card reset-card" onclick="location.reload()">
+                        <div class="card-icon">🔄</div>
+                        <h3>Refresh</h3>
+                        <p>Update System</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
