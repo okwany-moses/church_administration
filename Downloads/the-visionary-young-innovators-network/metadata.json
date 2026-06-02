@@ -1,0 +1,6 @@
+{
+  "name": "The Visionary Young Innovators Network",
+  "description": "The official network empowering youth development, school funding, and environmental sustainability, in alliance with Voicecommedia and in support of Lisa Hospitals.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

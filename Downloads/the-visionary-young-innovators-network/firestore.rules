@@ -1,0 +1,35 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 1. Global security: Deny all by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // 2. USERS: Read/write permitted to backend & verified client accounts and handlers
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+
+    // 3. BLOG POSTS: Publicly readable; writes permitted for management
+    match /posts/{postId} {
+      allow read, write: if true;
+    }
+
+    // 4. RESET TOKENS: Backend registration & verification
+    match /resetTokens/{tokenId} {
+      allow read, write: if true;
+    }
+
+    // 5. SETTINGS / BRANDING: Site branding config keys
+    match /settings/{settingId} {
+      allow read, write: if true;
+    }
+
+    // 6. REGISTRATIONS: Member signup backups
+    match /registrations/{registrationId} {
+      allow read, write: if true;
+    }
+  }
+}

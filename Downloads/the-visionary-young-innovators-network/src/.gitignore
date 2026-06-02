@@ -1,0 +1,15 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+
+# Firebase & Secrets
+firebase-applet-config.json
+.env
+
+# Local Database
+data_store.json
+
+# Misc
+.DS_Store

@@ -1,0 +1,108 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Secure record representing system users and auth levels.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier matching Auth UID" },
+        "email": { "type": "string", "format": "email", "description": "Registered email address" },
+        "fullName": { "type": "string", "description": "Representative full name" },
+        "role": { "type": "string", "enum": ["admin", "author", "member"], "description": "System access level" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" }
+      },
+      "required": ["id", "email", "fullName", "role", "createdAt"]
+    },
+    "BlogPost": {
+      "title": "BlogPost",
+      "description": "A blog article entry detailing network actions and operations.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique id of the post" },
+        "title": { "type": "string", "description": "Title of the post" },
+        "content": { "type": "string", "description": "Narrative text of the post" },
+        "author": {
+          "type": "object",
+          "description": "Embedded author metadata",
+          "properties": {
+            "id": { "type": "string" },
+            "fullName": { "type": "string" },
+            "email": { "type": "string", "format": "email" }
+          }
+        },
+        "publishedAt": { "type": "string", "format": "date-time", "description": "Timestamp when published" },
+        "image": { "type": "string", "description": "Resource URL of the header image" },
+        "category": { "type": "string", "description": "Structural category for filters" },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Core keywords tags list"
+        }
+      },
+      "required": ["id", "title", "content", "author", "publishedAt", "image", "category", "tags"]
+    },
+    "ResetToken": {
+      "title": "ResetToken",
+      "description": "Temporary reset tokens for users retrieving forgotten credentials.",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email" },
+        "userId": { "type": "string" },
+        "expiresAt": { "type": "integer" }
+      },
+      "required": ["email", "userId", "expiresAt"]
+    },
+    "Setting": {
+      "title": "Setting",
+      "description": "Global customization parameters, branding urls, and overlay visual filters.",
+      "type": "object",
+      "properties": {
+        "logoUrl": { "type": "string" },
+        "blendMode": { "type": "string" },
+        "hueFilter": { "type": "string" },
+        "invert": { "type": "boolean" },
+        "height": { "type": "integer" },
+        "placement": { "type": "string" },
+        "glow": { "type": "boolean" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["logoUrl", "blendMode", "hueFilter", "invert", "height", "placement", "glow", "updatedAt"]
+    },
+    "Registration": {
+      "title": "Registration",
+      "description": "Backup enrollment logs documenting network affiliate user records.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fullName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "primaryPillar": { "type": "string" },
+        "registrationDate": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "fullName", "email", "phone", "primaryPillar", "registrationDate"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "User profile structures keyed by user auth UID."
+    },
+    "posts/{postId}": {
+      "schema": "BlogPost",
+      "description": "Blog posts collection containing community logs."
+    },
+    "resetTokens/{tokenId}": {
+      "schema": "ResetToken",
+      "description": "Active temporary reset tokens."
+    },
+    "settings/{settingId}": {
+      "schema": "Setting",
+      "description": "Storage for site customization parameters."
+    },
+    "registrations/{registrationId}": {
+      "schema": "Registration",
+      "description": "User enlistment registry back-up logs."
+    }
+  }
+}
